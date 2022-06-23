@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css"
+    />
+    <link
+      href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?sensor=false"
+    ></script>
+    <script src="https://js.stripe.com/v3"></script>
+    <script type="text/javascript">
+      var geocoder;
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          successFunction,
+          errorFunction
+        );
+      }
+      //Get the latitude and the longitude;
+      function successFunction(position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        codeLatLng(lat, lng);
+      }
+
+      function errorFunction() {
+        alert("Geocoder failed");
+      }
+
+      function initialize() {
+        geocoder = new google.maps.Geocoder();
+      }
+
+      function codeLatLng(lat, lng) {
+        var latlng = new google.maps.LatLng(lat, lng);
+        geocoder.geocode({ latLng: latlng }, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            console.log(results);
+            if (results[1]) {
+              //formatted address
+              console.log(results[0].formatted_address);
+              //find country name
+              for (var i = 0; i < results[0].address_components.length; i++) {
+                for (
+                  var b = 0;
+                  b < results[0].address_components[i].types.length;
+                  b++
+                ) {
+                  //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+                  if (
+                    results[0].address_components[i].types[b] ==
+                    "administrative_area_level_3"
+                  ) {
+                    //this is the object you are looking for
+                    city = results[0].address_components[i];
+                    break;
+                  }
+                }
+              }
+              //city data
+              console.log(city.short_name + " " + city.long_name);
+              window.localStorage.setItem("current_location", city.short_name);
+            } else {
+              console.log("No results found");
+            }
+          } else {
+            console.log("Geocoder failed due to: " + status);
+          }
+        });
+      }
+    </script>
+  </head>
+  <body onload="initialize()">
+    <noscript>
+      <strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to
+        continue.</strong
+      >
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+  </body>
+</html>
