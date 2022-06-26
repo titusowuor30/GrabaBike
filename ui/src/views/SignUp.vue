@@ -49,6 +49,13 @@
           </div>
 
           <div class="field">
+            <label>Tel:</label>
+            <div class="control">
+              <input type="text" name="tel" class="input" v-model="tel" />
+            </div>
+          </div>
+
+          <div class="field">
             <label>Password</label>
             <div class="control">
               <input
@@ -102,6 +109,7 @@ export default {
       fname: "",
       lname: "",
       email: "",
+      tel: "",
       password1: "",
       password2: "",
       errors: [],
@@ -154,9 +162,10 @@ export default {
         this.$store.commit("setIsLoading", true);
         //this.roles.push({ name: this.loggedstatus });
         const formData = {
-          roles: [this.loggedstatusa],
+          roles: [this.loggedstatus],
           username: this.username,
           email: this.email,
+          tel: this.tel,
           first_name: this.fname,
           last_name: this.lname,
           password: this.password1,

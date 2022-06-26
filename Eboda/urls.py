@@ -25,7 +25,7 @@ urlpatterns = [
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # default: "Django Administration"
-admin.site.site_header = 'Eboda Administration'
+admin.site.site_header = 'GrabaBike Administration'
 # default: "Site administration"
 admin.site.index_title = 'Admin Area'
 admin.site.site_title = 'Ride Administration'

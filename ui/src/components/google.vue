@@ -32,6 +32,8 @@
         v-show="loggedClient"
         placeholder="Where to?"
         @place_changed="setPlace"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
         :options="{
           bounds: { north: 1.4, south: 1.2, east: 104, west: 102 },
           strictBounds: true,

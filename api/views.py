@@ -130,7 +130,8 @@ def confirm_rides(request):
         command = request.data['command']
         print(command)
         if command == 'accept':
-            rides = Rides.objects.get(client__username=client, rider=rider)
+            rides = Rides.objects.get(
+                client__username=client, rider=rider, confirmed=False)
             rides.confirmed = True
             rides.save()
             print(rides)
